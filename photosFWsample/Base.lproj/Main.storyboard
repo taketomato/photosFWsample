@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -15,8 +15,186 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZPi-IL-JLf">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tmd-Ih-xlS">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="B3d-cU-vil">
+                                        <variation key="widthClass=compact" constant="140"/>
+                                    </constraint>
+                                    <constraint firstAttribute="height" constant="30" id="Iui-8M-L7D"/>
+                                </constraints>
+                                <state key="normal" title="READ_AT_RANDOM">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="B3d-cU-vil"/>
+                                        <exclude reference="Iui-8M-L7D"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="B3d-cU-vil"/>
+                                        <include reference="Iui-8M-L7D"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="readTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="KFu-4d-5S6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lh4-Rf-x2l">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="47" id="Nw7-Gl-6SU">
+                                        <variation key="widthClass=compact" constant="133"/>
+                                    </constraint>
+                                    <constraint firstAttribute="height" constant="30" id="pnW-Y8-WHy"/>
+                                </constraints>
+                                <state key="normal" title="FILTER_AND_SAVE">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Nw7-Gl-6SU"/>
+                                        <exclude reference="pnW-Y8-WHy"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Nw7-Gl-6SU"/>
+                                        <include reference="pnW-Y8-WHy"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="saveTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ytJ-mw-RXq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gH-PP-bxe">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="142" id="EMc-Ap-hKQ"/>
+                                    <constraint firstAttribute="height" constant="30" id="Yqp-Ue-30i"/>
+                                </constraints>
+                                <state key="normal" title="READ_LAST_SAVED">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="EMc-Ap-hKQ"/>
+                                        <exclude reference="Yqp-Ue-30i"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="EMc-Ap-hKQ"/>
+                                        <include reference="Yqp-Ue-30i"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="readLastSavedTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="YRR-8L-VsI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ocy-zh-TUa">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="O1L-5s-Q1j"/>
+                                    <constraint firstAttribute="width" constant="104" id="kPr-Gj-aqk"/>
+                                </constraints>
+                                <state key="normal" title="MAKE_ALBUM">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="O1L-5s-Q1j"/>
+                                        <exclude reference="kPr-Gj-aqk"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="O1L-5s-Q1j"/>
+                                        <include reference="kPr-Gj-aqk"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="makeAlbumTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="E9K-hH-84W"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ZPi-IL-JLf" secondAttribute="bottom" id="4X3-km-S5b"/>
+                            <constraint firstAttribute="centerX" secondItem="lh4-Rf-x2l" secondAttribute="centerX" id="Cdo-Pv-crL"/>
+                            <constraint firstAttribute="centerX" secondItem="tmd-Ih-xlS" secondAttribute="centerX" id="GDo-ey-wIF">
+                                <variation key="widthClass=compact" constant="-1"/>
+                            </constraint>
+                            <constraint firstAttribute="centerX" secondItem="1gH-PP-bxe" secondAttribute="centerX" id="I21-Wm-rTM"/>
+                            <constraint firstAttribute="trailing" secondItem="ZPi-IL-JLf" secondAttribute="trailing" id="JoA-eW-1tC"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="tmd-Ih-xlS" secondAttribute="bottom" constant="102" id="W64-6H-GvE">
+                                <variation key="widthClass=compact" constant="164"/>
+                            </constraint>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="lh4-Rf-x2l" secondAttribute="bottom" constant="115" id="Wgn-eU-YHN"/>
+                            <constraint firstAttribute="centerX" secondItem="Ocy-zh-TUa" secondAttribute="centerX" id="ZBr-IO-9f7"/>
+                            <constraint firstItem="ZPi-IL-JLf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="cd8-GJ-SYW"/>
+                            <constraint firstAttribute="bottom" secondItem="Ocy-zh-TUa" secondAttribute="bottom" constant="202" id="map-V5-cKa">
+                                <variation key="widthClass=compact" constant="210"/>
+                            </constraint>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="1gH-PP-bxe" secondAttribute="bottom" constant="69" id="tHm-gM-iQ8"/>
+                            <constraint firstItem="ZPi-IL-JLf" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="zLT-Aw-KWC"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="ZPi-IL-JLf"/>
+                                <exclude reference="tmd-Ih-xlS"/>
+                                <exclude reference="lh4-Rf-x2l"/>
+                                <exclude reference="1gH-PP-bxe"/>
+                                <exclude reference="Ocy-zh-TUa"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="JoA-eW-1tC"/>
+                                <exclude reference="cd8-GJ-SYW"/>
+                                <exclude reference="zLT-Aw-KWC"/>
+                                <exclude reference="ZBr-IO-9f7"/>
+                                <exclude reference="map-V5-cKa"/>
+                                <exclude reference="GDo-ey-wIF"/>
+                                <exclude reference="Cdo-Pv-crL"/>
+                                <exclude reference="I21-Wm-rTM"/>
+                                <exclude reference="4X3-km-S5b"/>
+                                <exclude reference="W64-6H-GvE"/>
+                                <exclude reference="Wgn-eU-YHN"/>
+                                <exclude reference="tHm-gM-iQ8"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="ZPi-IL-JLf"/>
+                                <include reference="tmd-Ih-xlS"/>
+                                <include reference="lh4-Rf-x2l"/>
+                                <include reference="1gH-PP-bxe"/>
+                                <include reference="Ocy-zh-TUa"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="JoA-eW-1tC"/>
+                                <include reference="cd8-GJ-SYW"/>
+                                <include reference="zLT-Aw-KWC"/>
+                                <include reference="ZBr-IO-9f7"/>
+                                <include reference="map-V5-cKa"/>
+                                <include reference="GDo-ey-wIF"/>
+                                <include reference="Cdo-Pv-crL"/>
+                                <include reference="I21-Wm-rTM"/>
+                                <include reference="4X3-km-S5b"/>
+                                <include reference="W64-6H-GvE"/>
+                                <include reference="Wgn-eU-YHN"/>
+                                <include reference="tHm-gM-iQ8"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="ZPi-IL-JLf" id="65A-mC-S6j"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
