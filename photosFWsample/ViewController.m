@@ -1,4 +1,5 @@
 #import "ViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 @import Photos;
 
 NSString * const kMyAlbum = @"My Album";
@@ -12,6 +13,7 @@ NSString * const kAlbumIdentifier = @"albumIdentifier";
 - (IBAction)readTapped:(id)sender;
 - (IBAction)saveTapped:(id)sender;
 - (IBAction)readLastSavedTapped:(id)sender;
+- (IBAction)nsdataReadAndSaveTapped:(id)sender;
 @end
 
 @implementation ViewController
@@ -43,6 +45,10 @@ NSString * const kAlbumIdentifier = @"albumIdentifier";
 
 - (IBAction)readLastSavedTapped:(id)sender {
     [self readLastSavedAction];
+}
+
+- (IBAction)nsdataReadAndSaveTapped:(id)sender {
+    [self nsdataReadAndSaveAction];
 }
 
 #pragma mark === Private ===
@@ -239,4 +245,133 @@ NSString * const kAlbumIdentifier = @"albumIdentifier";
         NSLog(@"collectionList.localizedTitle:%@", collectionList.localizedTitle);
     }];
 }
+
+/**
+ * @brief 指定の asset を UIImageView に表示します
+ */
+- (void)nsdataReadAndSaveAction {
+    NSLog(@"nsdata read and save action");
+    
+    // PHAssetを取得します
+    PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:[self getMyAlbum] options:nil];
+    NSLog(@"assets.count = %lu", assets.count);
+    if (assets.count == 0) {
+        [self showMessage:@"No Image in My Album."];
+        return;
+    }
+    
+    // assets を取り出します
+    NSArray * assetArray = [self getAssets:assets];
+    
+    // UIImageView をランダムに更新します
+    [self updateImageViewWithAssetByData:assetArray[arc4random() % assets.count]];
+}
+
+/**
+ * @brief 画像を asset から NSData として取り出します
+ */
+- (void)updateImageViewWithAssetByData:(PHAsset *)asset {
+    typeof(self) __weak wself = self;
+    [[PHImageManager defaultManager] requestImageDataForAsset:asset
+                                                      options:nil
+                                                resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+                                                    if (imageData) {
+                                                        wself.imageView.image = [UIImage imageWithData:imageData];
+                                                        // 保存する
+                                                        //                                                        [self saveImageWithALAssestLibrary:imageData];
+                                                        [self saveImageWithDataToURL:imageData];
+                                                    }
+                                                }];
+}
+
+/**
+ * @brief 一度 url に保存し、url から asset に画像を作ります
+ */
+- (void)saveImageWithDataToURL:(NSData *)data {
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *writefilename = @"new.png";
+    NSURL *bUrl = [NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:documentsDirectory, writefilename, nil]];
+    [data writeToURL:bUrl atomically:YES];
+    [self addNewAssetWithURL:bUrl toAlbum:[self getMyAlbum]];
+}
+
+/**
+ * @brief url から asset に画像を作ります
+ */
+- (void)addNewAssetWithURL:(NSURL *)url toAlbum:(PHAssetCollection *)album
+{
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        // Request creating an asset from the url.
+        PHAssetChangeRequest *createAssetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:url];
+        
+        // Request editing the album.
+        PHAssetCollectionChangeRequest *albumChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:album];
+        
+        // Get a placeholder for the new asset and add it to the album editing request.
+        PHObjectPlaceholder * placeHolder = [createAssetRequest placeholderForCreatedAsset];
+        [albumChangeRequest addAssets:@[ placeHolder ]];
+        
+        // identifier を USerDefaults に保存します
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:placeHolder.localIdentifier forKey:kAssetIdentifier];
+        [defaults synchronize];
+        
+    } completionHandler:^(BOOL success, NSError *error) {
+        NSLog(@"Finished adding asset. %@", (success ? @"Success" : error));
+    }];
+}
+
+/**
+ * @brief ALAssetLibrary を使って NSData をアルバムに書き出します
+ */
+- (void)saveImageWithALAssestLibrary:(NSData *)data {
+    ALAssetsLibrary * const assets = [ALAssetsLibrary new];
+    void (^saveImageBlock)(ALAssetsGroup *) = [^(ALAssetsGroup * group) {
+        NSURL * groupURL = [group valueForProperty:ALAssetsGroupPropertyURL];
+        @autoreleasepool {
+            [assets writeImageDataToSavedPhotosAlbum:data
+                                            metadata:nil
+                                     completionBlock:^(NSURL * url, NSError * error) {
+                                         // URLからGroupを取得
+                                         [assets groupForURL:groupURL
+                                                 resultBlock:^(ALAssetsGroup * group) {
+                                                     // URLからALAssetを取得
+                                                     [assets assetForURL:url
+                                                             resultBlock:^(ALAsset * asset) {
+                                                                 if (group.editable) {
+                                                                     // GroupにAssetを追加
+                                                                     [group addAsset:asset];
+                                                                 }
+                                                             }
+                                                            failureBlock:nil
+                                                      ];
+                                                 }
+                                                failureBlock:nil
+                                          ];
+                                     }];
+        }
+    } copy];
+    
+    NSString * const albumName = @"test";
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [assets enumerateGroupsWithTypes:ALAssetsGroupAlbum
+                              usingBlock:^(ALAssetsGroup * group, BOOL * stop) {
+                                  if (group) {
+                                      if ([albumName isEqualToString:[group valueForProperty:ALAssetsGroupPropertyName]]) {
+                                          saveImageBlock(group);
+                                          *stop = YES;
+                                      }
+                                  }
+                                  else if (!*stop) {
+                                          [assets addAssetsGroupAlbumWithName:albumName
+                                                                  resultBlock:saveImageBlock
+                                                                 failureBlock:nil
+                                           ];
+                                  }
+                              }
+                            failureBlock:nil
+         ];
+    });
+}
+
 @end
